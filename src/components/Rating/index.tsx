@@ -13,8 +13,6 @@ export default function Rating({value}: RatingProps): JSX.Element {
   const half = floor % 1 === 0.5;
   const wholes = floor - (half ? 0.5 : 0);
 
-  console.log(value, floor, half, wholes);
-
   return (
     <div className="flex flex-col -space-y-4">
       <div className="flex flex-row gap-2 ">
@@ -38,7 +36,6 @@ export default function Rating({value}: RatingProps): JSX.Element {
  */
 function slipFloor(num: number): number {
   let f = Math.floor(num);
-  console.log(f);
   if(num-f < 0.5){
     return f;
   } else if ( num-f > 0.5){

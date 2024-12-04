@@ -13,7 +13,7 @@ const imageStyle: CSSProperties = {
 export default function ProductCard({ product }: ProductCardProps): JSX.Element { 
   return (
       <div className="flex flex-col justify-between p-4 bg-white shadow-sm min-[350px]:w-[300px] max-[350px]:max-w-[300px] h-[500px] border border-slate-100 rounded hover:border-teal-100">
-        <Link href={`/products/${product.id}`} className="h-full">
+        <Link href={`/${product.id}`} className="h-full">
           <div className=" p-4 bg-white flex justify-center align-middle">
             <Image style={imageStyle} src={product.image} alt={product.image} width={200} height={200} />
           </div>
@@ -41,7 +41,7 @@ export default function ProductCard({ product }: ProductCardProps): JSX.Element 
             </div>
           </div>
         </Link>
-        <Button className='w-full' text="Add to Cart" color="green" />
+        <Button className='w-full' color="green">Add to Cart</Button>
       </div>
   );
 }

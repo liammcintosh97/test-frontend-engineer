@@ -1,12 +1,11 @@
-import { ButtonHTMLAttributes } from "react";
+import { AnchorHTMLAttributes, ButtonHTMLAttributes } from "react";
 
 export type ButtonProps = {
-  /** The text to display on the button */
-  text: string;
   /** The color of the button */
   color: Colors;
-  /** The size of the button */
-} & ButtonHTMLAttributes<HTMLButtonElement>;
+  /** A url link */
+  href?: string;
+} & ButtonHTMLAttributes<HTMLButtonElement> & AnchorHTMLAttributes<HTMLAnchorElement>;
 
 export type Colors = 
 'slate' |
