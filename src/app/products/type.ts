@@ -12,4 +12,11 @@ export type Product = {
   description: string,
   /** The url string to the image of the product */
   image: string
+  /** The rating data of the product */
+  rating: {
+    /** The average user rating */
+    rate: number,
+    /** The number of ratings */
+    count: number
+  }
 }

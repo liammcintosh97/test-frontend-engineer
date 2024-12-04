@@ -8,7 +8,7 @@ import { NavLinkProps } from './type';
  */
 export default function NavBar(): JSX.Element{
   return (
-    <nav className='p-4 bg-slate-100'>
+    <div className='p-4 bg-teal-500 border-teal-600 border-b'>
       <ul className='flex flex-row gap-8 justify-between'>
         <div className='flex flex-row gap-8'>
           <NavLink href="/">Home</NavLink>
@@ -16,7 +16,7 @@ export default function NavBar(): JSX.Element{
         </div>
           <NavLink href="/cart">Cart</NavLink>
       </ul>
-    </nav>
+    </div>
   );
 };
 
@@ -28,7 +28,7 @@ export default function NavBar(): JSX.Element{
 function NavLink({children, ...restProps} : NavLinkProps): JSX.Element{
   return (
     <li>
-      <Link {...restProps} className='text-slate-700'>{children}</Link>
+      <Link {...restProps} className='text-slate-100'>{children}</Link>
     </li>
   )
 }
