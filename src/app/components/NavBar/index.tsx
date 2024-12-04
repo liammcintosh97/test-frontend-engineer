@@ -4,7 +4,6 @@ import { NavLinkProps } from './type';
 
 /**
  * NavBar component
- * @module NavBar
  * @returns {JSX.Element}
  */
 export default function NavBar(): JSX.Element{
@@ -23,11 +22,10 @@ export default function NavBar(): JSX.Element{
 
 /**
  * The NavLink component
- * @memberof module:NavBar
  * @param {NavLinkProps} props - The props of the NavLink component
- * @returns
+ * @returns {JSX.Element}
  */
-function NavLink({children, ...restProps} : NavLinkProps){
+function NavLink({children, ...restProps} : NavLinkProps): JSX.Element{
   return (
     <li>
       <Link {...restProps} className='text-slate-700'>{children}</Link>
