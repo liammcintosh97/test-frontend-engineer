@@ -58,7 +58,7 @@ async function getCategories(): Promise<string[]> {
 export default async function Home({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const category = (await searchParams)?.category as string | undefined;
 

@@ -20,7 +20,6 @@ async function getProduct(slug: string): Promise<ProductType> {
       throw new Error(`Failed to fetch product ${res.status} - ${res.statusText}`);
     }
     const product = await res.json();
-
     return product
   } catch (error) {
     if ((error as Error).message === 'Unexpected end of JSON input') {
