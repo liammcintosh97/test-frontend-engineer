@@ -35,7 +35,7 @@ export default function Rating({value}: RatingProps): JSX.Element {
  * @returns {number}
  */
 function slipFloor(num: number): number {
-  let f = Math.floor(num);
+  const f = Math.floor(num);
   if(num-f < 0.5){
     return f;
   } else if ( num-f > 0.5){

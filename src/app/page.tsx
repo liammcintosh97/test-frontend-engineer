@@ -47,26 +47,22 @@ export default async function Home({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const category = searchParams?.category as string | undefined;
+  const category = (await searchParams)?.category as string | undefined;
 
   const products = await getProducts(category);
   const categories = await getCategories();
   return (
-    <div>
-      <section>
-        <CategorySelect categories={categories} selectedCategory={category} />
-      </section>
-      <section className="flex justify-center">
-        <div className="flex">
-          <ul className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {products.map((product) => (
-              <li key={`product_${product.id}`}>
-                <ProductCard product={product} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+    <div className="flex flex-col justify-center items-center">
+      <CategorySelect categories={categories} selectedCategory={category} />
+      <div className="flex">
+        <ul className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {products.map((product) => (
+            <li key={`product_${product.id}`}>
+              <ProductCard product={product} />
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   )
 }

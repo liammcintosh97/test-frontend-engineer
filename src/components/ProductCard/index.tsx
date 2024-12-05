@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { CSSProperties } from "react";
 import Button from "../Button";
 import Rating from "../Rating";
+import PriceTag from "../PriceTag";
 
 const imageStyle: CSSProperties = {
   height: 200,
@@ -20,7 +21,10 @@ export default function ProductCard({ product }: ProductCardProps): JSX.Element 
           <div className="flex flex-col justify-around">
             <div>
               <h2 className="line-clamp-2 min">{product.title}</h2>
-              <p className="text-sm text-slate-400">{product.category}</p>
+              <div className="flex flex-row gap-4">
+                <p className="text-sm text-slate-400">{product.category}</p>
+                <p className="text-sm text-slate-400">pid: {product.id}</p>
+              </div>
             </div>
             <div className="flex flex-row gap-4 content-center mt-4">
               <Rating value={product.rating.rate}/>
@@ -29,19 +33,10 @@ export default function ProductCard({ product }: ProductCardProps): JSX.Element 
                 <p className="text-xs text-slate-400 text-center">{`(${product.rating.count})`}</p>
               </div>
             </div>
-            <div className="flex flex-row mt-4">
-              <div className="bg-red-600 p-2 w-fit">
-                <p className="text-slate-100 font-semibold">${product.price}</p>
-              </div>
-              <div className="w-0 h-0
-                border-t-[20px] border-t-transparent
-                border-l-[10px] border-l-red-600
-                border-b-[20px] border-b-transparent">
-              </div>
-            </div>
+            <PriceTag className="mt-4" price={product.price}/>
           </div>
         </Link>
-        <Button className='w-full' color="green">Add to Cart</Button>
+        <Button className='w-full bg-green-500 hover:bg-green-700'>Add to Cart</Button>
       </div>
   );
 }

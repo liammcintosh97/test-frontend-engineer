@@ -1,3 +1,4 @@
+'use client'
 import Link from "next/link";
 import { ButtonProps } from "./type";
 
@@ -6,22 +7,19 @@ import { ButtonProps } from "./type";
  * @param {ButtonProps} props - The props of the Button component
  * @returns 
  */
-export default function Button({color = 'slate', children, className, href, ...restProps}: ButtonProps): JSX.Element {
-  let _className = `bg-${color}-500 hover:bg-${color}-700 text-slate-100 font-bold py-2 px-4 rounded`
-  if (className) {
-    _className += ' ' + className
-  }
+export default function Button({children, className, href, ...restProps}: ButtonProps): JSX.Element {
+  className = `text-slate-100 font-bold py-2 px-4 rounded ${className ? className : ''}`
 
   if (href) {
     return (
       <Link href={href} {...restProps}>
-        <div className={_className}>{children}</div>
+        <div className={className}>{children}</div>
       </Link>
     )
   }
 
   return (
-    <button {...restProps} className={_className}>
+    <button {...restProps} className={className}>
       {children}
     </button>
   )
