@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Rating from "@/components/Rating";
 import PriceTag from "@/components/PriceTag";
 import Button from "@/components/Button";
+import { notFound } from 'next/navigation'
 
 /**
  * Fetched the product from the API based on the slug
@@ -13,12 +14,19 @@ async function getProduct(slug: string): Promise<ProductType> {
   try {
     const res = await fetch(`https://fakestoreapi.com/products/${slug}`, {cache: 'force-cache', next: { revalidate: 30 } });
     if (res.status !== 200) {
+      if (res.status === 404) {
+        notFound()
+      }
       throw new Error(`Failed to fetch product ${res.status} - ${res.statusText}`);
     }
-    const products = await res.json();
-    return products
+    const product = await res.json();
+
+    return product
   } catch (error) {
-    throw error;
+    if ((error as Error).message === 'Unexpected end of JSON input') {
+      notFound()
+    }
+    throw error
   }
 }
 

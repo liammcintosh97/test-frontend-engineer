@@ -1,6 +1,7 @@
 import CategorySelect from "@/components/CategorySelect";
 import { Product } from "./type";
 import ProductCard from "@/components/ProductCard";
+import { notFound } from "next/navigation";
 
 /**
  * Fetches all the products from the API
@@ -16,11 +17,17 @@ async function getProducts(category?: string): Promise<Product[]> {
 
     const res = await fetch(url, {cache: 'force-cache' });
     if (res.status !== 200) {
+      if (res.status === 404) {
+        notFound()
+      }
       throw new Error(`Failed to fetch products ${res.status} - ${res.statusText}`);
     }
     const products = await res.json();
     return products
   } catch (error) {
+    if ((error as Error).message === 'Unexpected end of JSON input') {
+      notFound()
+    }
     throw error;
   }
 }
@@ -33,11 +40,17 @@ async function getCategories(): Promise<string[]> {
   try {
     const res = await fetch('https://fakestoreapi.com/products/categories', {cache: 'force-cache' });
     if (res.status !== 200) {
-      throw new Error(`Failed to fetch products ${res.status} - ${res.statusText}`);
+      if (res.status === 404) {
+        notFound()
+      }
+      throw new Error(`Failed to fetch categories ${res.status} - ${res.statusText}`);
     }
-    const products = await res.json();
-    return products
+    const categories = await res.json();
+    return categories
   } catch (error) {
+    if ((error as Error).message === 'Unexpected end of JSON input') {
+      notFound()
+    }
     throw error;
   }
 }
