@@ -1,5 +1,5 @@
+import getProducts from "@/util/getProducts";
 import { MetadataRoute } from "next/types";
-import { getProducts } from "./page";
 
 const routes = [
   "cart"

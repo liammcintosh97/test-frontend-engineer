@@ -1,5 +1,5 @@
 /** The properties of the Product page*/
-export type ProductPage = {
+export type ProductPageProps = {
   params: Promise<Params>
 }
 /** The Param object of the route */

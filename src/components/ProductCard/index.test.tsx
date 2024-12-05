@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ProductCard from '../ProductCard';
-import { ProductCardProps } from '../ProductCard/type';
+import ProductCard from '.';
+import { ProductCardProps } from './type';
 
 describe('ProductCard Component', () => {
   const product: ProductCardProps['product'] = {

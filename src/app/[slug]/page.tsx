@@ -1,20 +1,20 @@
-import { ProductPage } from "./type"
-import { MetaData, Product as ProductType} from "../type"
+import { MetaData} from "../type"
 import Image from 'next/image'
 import Rating from "@/components/Rating";
 import PriceTag from "@/components/PriceTag";
 import Button from "@/components/Button";
-import { notFound } from 'next/navigation'
 import { openGraphBasicFields, openGraphImage } from "../shared-metadata";
+import getProduct from "@/util/getProduct";
+import { ProductPageProps } from "./type";
 
 /**
  * Generates the meta data for the Product page
- * @param {ProductPage} props - The meta data properties
+ * @param {ProductPageProps} props - The meta data properties
  * @returns {Promise<>}
  */
 export async function generateMetadata({
   params
-}: ProductPage): Promise<MetaData> {
+}: ProductPageProps): Promise<MetaData> {
   const product = await getProduct((await params).slug)
   const title = `eStore - ${product.title}`
 
@@ -30,32 +30,9 @@ export async function generateMetadata({
   }
 }
 
-/**
- * Fetched the product from the API based on the slug
- * @returns {Promise<Product[]>}
- */
-async function getProduct(slug: string): Promise<ProductType> {
-  try {
-    const res = await fetch(`https://fakestoreapi.com/products/${slug}`, {cache: 'force-cache', next: { revalidate: 30 } });
-    if (res.status !== 200) {
-      if (res.status === 404) {
-        notFound()
-      }
-      throw new Error(`Failed to fetch product ${res.status} - ${res.statusText}`);
-    }
-    const product = await res.json();
-    return product
-  } catch (error) {
-    if ((error as Error).message === 'Unexpected end of JSON input') {
-      notFound()
-    }
-    throw error
-  }
-}
-
-export default async function Product({
+export default async function ProductPage({
   params,
-}: ProductPage) {
+}: ProductPageProps) {
   const slug = (await params).slug
   const product = await getProduct(slug);
   return (

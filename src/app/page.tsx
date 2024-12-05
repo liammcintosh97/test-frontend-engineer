@@ -1,8 +1,8 @@
 import CategorySelect from "@/components/CategorySelect";
-import { Product } from "./type";
 import ProductCard from "@/components/ProductCard";
-import { notFound } from "next/navigation";
 import { openGraphBasicFields, openGraphImage } from "./shared-metadata";
+import getProducts from "@/util/getProducts";
+import getCategories from "@/util/getCategories";
 
 const title = 'eStore - Home'
 const description =  'The eStore home page '
@@ -18,59 +18,7 @@ export const metadata = {
   }
 }
 
-/**
- * Fetches all the products from the API
- * @returns {Promise<Product[]>}
- */
-export async function getProducts(category?: string): Promise<Product[]> {
-  try {
-    let url = 'https://fakestoreapi.com/products'
-
-    if (category) {
-      url = `https://fakestoreapi.com/products/category/${category}`
-    }
-
-    const res = await fetch(url, {cache: 'force-cache' });
-    if (res.status !== 200) {
-      if (res.status === 404) {
-        notFound()
-      }
-      throw new Error(`Failed to fetch products ${res.status} - ${res.statusText}`);
-    }
-    const products = await res.json();
-    return products
-  } catch (error) {
-    if ((error as Error).message === 'Unexpected end of JSON input') {
-      notFound()
-    }
-    throw error;
-  }
-}
-
-/**
- * Fetches all the categories from the API
- * @returns {Promise<string[]>}
- */
-async function getCategories(): Promise<string[]> {
-  try {
-    const res = await fetch('https://fakestoreapi.com/products/categories', {cache: 'force-cache' });
-    if (res.status !== 200) {
-      if (res.status === 404) {
-        notFound()
-      }
-      throw new Error(`Failed to fetch categories ${res.status} - ${res.statusText}`);
-    }
-    const categories = await res.json();
-    return categories
-  } catch (error) {
-    if ((error as Error).message === 'Unexpected end of JSON input') {
-      notFound()
-    }
-    throw error;
-  }
-}
-
-export default async function Home({
+export default async function HomePage({
   searchParams,
 }: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
