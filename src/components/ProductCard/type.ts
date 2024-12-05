@@ -1,4 +1,4 @@
-import { Product } from "@/app/products/type"
+import { Product } from "../../app/type";
 
 /**
  * The ProductCardProps interface defines the props for the ProductCard component
