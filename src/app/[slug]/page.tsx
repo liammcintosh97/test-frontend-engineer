@@ -1,10 +1,34 @@
 import { ProductPage } from "./type"
-import { Product as ProductType} from "../type"
+import { MetaData, Product as ProductType} from "../type"
 import Image from 'next/image'
 import Rating from "@/components/Rating";
 import PriceTag from "@/components/PriceTag";
 import Button from "@/components/Button";
 import { notFound } from 'next/navigation'
+import { openGraphBasicFields, openGraphImage } from "../shared-metadata";
+
+/**
+ * Generates the meta data for the Product page
+ * @param {ProductPage} props - The meta data properties
+ * @returns {Promise<>}
+ */
+export async function generateMetadata({
+  params
+}: ProductPage): Promise<MetaData> {
+  const product = await getProduct((await params).slug)
+  const title = `eStore - ${product.title}`
+
+  return {
+    title: title,
+    description: product.description,
+    openGraph:{
+      ...openGraphImage,
+      ...openGraphBasicFields,
+      title: title,
+      description: product.description
+    }
+  }
+}
 
 /**
  * Fetched the product from the API based on the slug

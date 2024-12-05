@@ -30,3 +30,27 @@ export type Product = {
     count: number
   }
 }
+
+/** The page meta data */
+export type MetaData = {
+  /** The title */
+  title: string
+  /** The description */
+  description: string
+  /** The openGraph config */
+  openGraph: {
+    title: string
+    description: string
+    url: string | undefined
+    siteName: string
+    locale: string
+    authors: {
+      name: string
+      url: string | undefined
+    }[];
+    images: {
+      url: string | undefined
+      alt: string
+    }[]
+  }
+}

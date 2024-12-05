@@ -2,12 +2,27 @@ import CategorySelect from "@/components/CategorySelect";
 import { Product } from "./type";
 import ProductCard from "@/components/ProductCard";
 import { notFound } from "next/navigation";
+import { openGraphBasicFields, openGraphImage } from "./shared-metadata";
+
+const title = 'eStore - Home'
+const description =  'The eStore home page '
+
+export const metadata = {
+  title: title,
+  description: description,
+  openGraph:{
+    ...openGraphImage,
+    ...openGraphBasicFields,
+    title: title,
+    description: description
+  }
+}
 
 /**
  * Fetches all the products from the API
  * @returns {Promise<Product[]>}
  */
-async function getProducts(category?: string): Promise<Product[]> {
+export async function getProducts(category?: string): Promise<Product[]> {
   try {
     let url = 'https://fakestoreapi.com/products'
 
