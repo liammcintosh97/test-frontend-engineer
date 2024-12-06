@@ -9,9 +9,21 @@ import getProduct from '@/util/getProduct';
  */
 const CartContext: Context<CartContextType | undefined> = createContext<CartContextType | undefined>(undefined);
 
-const findItem = (id: number, state: CartState) => state.items.find(item => item.id === id);
+/**
+ * Finds an item in the cart by its id.
+ * @param {number} id - the id of the item to find
+ * @param {CartState} state - the state of the cart
+ * @returns {CartItem | undefined} - the item if found, undefined otherwise
+ */
+const findItem = (id: number, state: CartState): CartItem | undefined => state.items.find(item => item.id === id);
 
-function addItem(state: CartState, payload: CartItem | CartItem[] | undefined) {
+/**
+ * Adds an item to the cart. If the item already exists, it increments the quantity.
+ * @param {CartState} state  - the state of the cart
+ * @param {CartItem | CartItem[] | undefined} payload - the item to add
+ * @returns {CartState} - the new state of the cart
+ */
+function addItem(state: CartState, payload: CartItem | CartItem[] | undefined): CartState {
   let _state
   if (!payload || Array.isArray(payload)) {
     throw new Error('payload for ADD_ITEM must be a CartItem')
@@ -31,7 +43,13 @@ function addItem(state: CartState, payload: CartItem | CartItem[] | undefined) {
   return _state
 }
 
-function removeItem(state: CartState,  payload: CartItem | CartItem[] | undefined) {
+/**
+ * Removes an item from the cart.
+ * @param {CartState} state  - the state of the cart
+ * @param {CartItem | CartItem[] | undefined} payload - the item to remove
+ * @returns {CartState} - the new state of the cart
+ */
+function removeItem(state: CartState,  payload: CartItem | CartItem[] | undefined): CartState {
   let _state = {...state}
   if (!payload|| Array.isArray(payload)) {
     throw new Error('payload for ADD_ITEM must be a CartItem')
@@ -57,13 +75,22 @@ function removeItem(state: CartState,  payload: CartItem | CartItem[] | undefine
   return _state;
 }
 
-function clearCart() {
+/**
+ * Clears the cart.
+ * @returns {CartState} - the new state of the cart
+ */
+function clearCart(): CartState {
   const _state = {items: [] }
 
   localStorage.setItem('cart', JSON.stringify(_state));
   return _state
 }
 
+/**
+ * Sets the cart items to the provided array of CartItems.
+ * @param { CartItem | CartItem[] | undefined} payload - The items to set in the cart.
+ * @returns
+ */
 function setCart( payload: CartItem | CartItem[] | undefined) {
   if (!Array.isArray(payload)) {
     throw new Error('payload for SET_CART must be an array of CartItems');
