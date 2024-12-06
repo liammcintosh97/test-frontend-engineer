@@ -15,7 +15,7 @@ import { ProductPageProps } from "./type";
 export async function generateMetadata({
   params
 }: ProductPageProps): Promise<MetaData> {
-  const product = await getProduct((await params).slug)
+  const product = await getProduct(parseInt((await params).slug))
   const title = `eStore - ${product.title}`
 
   return {
@@ -34,7 +34,7 @@ export default async function ProductPage({
   params,
 }: ProductPageProps) {
   const slug = (await params).slug
-  const product = await getProduct(slug);
+  const product = await getProduct(parseInt(slug));
   return (
     <div className="flex justify-center">
       <div className="flex flex-wrap justify-center flex-row gap-8 w-fit p-4 bg-white shadow-sm border border-slate-100 rounded">
