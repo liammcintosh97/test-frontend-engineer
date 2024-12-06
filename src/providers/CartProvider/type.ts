@@ -1,7 +1,9 @@
+import { Product } from "@/util/getProducts/type";
+
 /** The shape of a cart item */
 export type CartItem = {
   /** The id of the item */
-  id: string;
+  id: number;
   /** The quantity of the item */
   quantity: number;
 }
@@ -30,4 +32,6 @@ export type CartContextType = {
   state: CartState;
   /** The dispatch function for the cart */
   dispatch: React.Dispatch<CartAction>;
+  /** Gets all the product data from the cart ids */
+  getCartProducts: () => Promise<Product[]>;
 }

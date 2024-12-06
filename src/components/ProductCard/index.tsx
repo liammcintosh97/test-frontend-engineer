@@ -3,9 +3,9 @@ import Link from "next/link";
 import { ProductCardProps } from "./type";
 import Image from 'next/image'
 import { CSSProperties } from "react";
-import Button from "../Button";
 import Rating from "../Rating";
 import PriceTag from "../PriceTag";
+import AddToCartButton from "../AddToCartButton";
 
 const imageStyle: CSSProperties = {
   height: 200,
@@ -37,7 +37,7 @@ export default function ProductCard({ product }: ProductCardProps): JSX.Element 
             <PriceTag className="mt-4" price={product.price}/>
           </div>
         </Link>
-        <Button className='w-full bg-green-500 hover:bg-green-700'>Add to Cart</Button>
+        <AddToCartButton pid={product.id} className='w-full'/>
       </div>
   );
 }

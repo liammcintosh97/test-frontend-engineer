@@ -5,9 +5,9 @@ import { Product } from "../getProducts/type";
  * Fetched the product from the API based on the slug
  * @returns {Promise<Product[]>}
  */
-export default async function getProduct(slug: string): Promise<Product> {
+export default async function getProduct(id: number): Promise<Product> {
   try {
-    const res = await fetch(`https://fakestoreapi.com/products/${slug}`, {cache: 'force-cache', next: { revalidate: 30 } });
+    const res = await fetch(`https://fakestoreapi.com/products/${id}`, {cache: 'force-cache', next: { revalidate: 30 } });
     if (res.status !== 200) {
       if (res.status === 404) {
         notFound()

@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useReducer, ReactNode, useEffect, Context } from 'react';
-import { CartAction, CartContextType, CartState } from './type';
+import React, { createContext, useContext, useReducer, ReactNode, useEffect, Context, useCallback } from 'react';
+import { CartAction, CartContextType, CartItem, CartState } from './type';
+import getProduct from '@/util/getProduct';
 
 /**
  * The context for the shopping cart.
@@ -7,6 +8,71 @@ import { CartAction, CartContextType, CartState } from './type';
  * @type {Context<CartContextType | undefined>}
  */
 const CartContext: Context<CartContextType | undefined> = createContext<CartContextType | undefined>(undefined);
+
+const findItem = (id: number, state: CartState) => state.items.find(item => item.id === id);
+
+function addItem(state: CartState, payload: CartItem | CartItem[] | undefined) {
+  let _state
+  if (!payload || Array.isArray(payload)) {
+    throw new Error('payload for ADD_ITEM must be a CartItem')
+  }
+  if (findItem(payload.id, state)) {
+    _state = {
+      ...state,
+      items: state.items.map(item =>
+        item.id === payload.id ? { ...item, quantity: item.quantity + 1 } : item
+      ),
+    };
+  } else {
+    _state = { ...state, items: [...state.items, { ...payload, quantity: 1 }] };
+
+  }
+  localStorage.setItem('cart', JSON.stringify(_state));
+  return _state
+}
+
+function removeItem(state: CartState,  payload: CartItem | CartItem[] | undefined) {
+  let _state = {...state}
+  if (!payload|| Array.isArray(payload)) {
+    throw new Error('payload for ADD_ITEM must be a CartItem')
+  }
+
+  const existingItem = findItem(payload.id, state);
+  if (existingItem) {
+    if (existingItem.quantity > 1) {
+      _state = {
+        ...state,
+        items: state.items.map(item =>
+          item.id === payload.id ? { ...item, quantity: item.quantity - 1 } : item
+        ),
+      };
+    } else {
+      _state = {
+        ...state,
+        items: state.items.filter(item => item.id !== payload.id),
+      };
+    }
+  }
+  localStorage.setItem('cart', JSON.stringify(_state));
+  return _state;
+}
+
+function clearCart() {
+  const _state = {items: [] }
+
+  localStorage.setItem('cart', JSON.stringify(_state));
+  return _state
+}
+
+function setCart( payload: CartItem | CartItem[] | undefined) {
+  if (!Array.isArray(payload)) {
+    throw new Error('payload for SET_CART must be an array of CartItems');
+  }
+  const _state = {items: payload}
+
+  localStorage.setItem('cart', JSON.stringify(_state));
+  return _state;
+}
 
 /**
  * Reducer function to manage the state of the shopping cart.
@@ -24,44 +90,15 @@ const CartContext: Context<CartContextType | undefined> = createContext<CartCont
  * - 'SET_CART': Sets the cart items to the provided array of CartItems.
  */
 const cartReducer = (state: CartState, action: CartAction): CartState => {
-  const payload = action.payload;
   switch (action.type) {
-
     case 'ADD_ITEM':
-      if (!payload || Array.isArray(payload)) {
-        throw new Error('payload for ADD_ITEM must be a CartItem')
-      }
-
-      const existingItem = state.items.find(item => item.id === payload.id);
-      if (existingItem) {
-        return {
-          ...state,
-          items: state.items.map(item =>
-            item.id === payload.id ? { ...item, quantity: item.quantity + 1 } : item
-          ),
-        };
-      }
-      return { ...state, items: [...state.items, { ...payload, quantity: 1 }] };
+      return addItem(state, action.payload);
     case 'REMOVE_ITEM':
-      if (!payload|| Array.isArray(payload)) {
-        throw new Error('payload for ADD_ITEM must be a CartItem')
-      }
-
-      if (payload) {
-        return {
-          ...state,
-          items: state.items.filter(item => item.id !== payload.id),
-        };
-      }
-      return state;
+      return removeItem(state, action.payload);
     case 'CLEAR_CART':
-      return { ...state, items: [] };
+      return clearCart();
     case 'SET_CART':
-      if (!Array.isArray(payload)) {
-        throw new Error('payload for SET_CART must be an array of CartItems');
-      }
-
-      return {...state, items: payload|| []};
+      return setCart(action.payload);
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
   }
@@ -75,30 +112,35 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(cartReducer, { items: [] });
 
-  useEffect(() => {
-    console.log('Cart State:', state);
-    localStorage.setItem('cart', JSON.stringify(state));
-  }, [state]);
-
-  useEffect(() => {
+  const getStoredCart = useCallback(() => {
     const string = localStorage.getItem('cart');
-    const storedCart = string ? JSON.parse(string) : undefined;
-    if (Array.isArray(storedCart)) {
-      dispatch({ type: 'SET_CART', payload: storedCart });
-    }
+    const storedCart: CartState | undefined = string ? JSON.parse(string) : undefined;
+    return storedCart
   }, []);
 
-  return <CartContext.Provider value={{ state, dispatch }}>{children}</CartContext.Provider>;
+  const getCartProducts = useCallback(async () => {
+    try {
+      return Promise.all(state.items.map(async item => await getProduct(item.id)))
+    } catch (error) {
+      throw error
+    }
+  }, [state.items])
+
+  useEffect(() => {
+    const storedCart = getStoredCart();
+    if (storedCart) {
+      dispatch({ type: 'SET_CART', payload: storedCart.items });
+    }
+  },[getStoredCart])
+
+  return <CartContext.Provider value={{ state, dispatch, getCartProducts }}>{children}</CartContext.Provider>;
 };
 
 /**
  * A custom hook to access the cart state and dispatch actions.
  * @returns {{state: CartState; dispatch: React.Dispatch<CartAction>;}}
  */
-export const useCart = (): {
-  state: CartState;
-  dispatch: React.Dispatch<CartAction>;
-} => {
+export const useCart = (): CartContextType  => {
   const context = useContext(CartContext);
   if (context === undefined) {
     throw new Error('useCart must be used within a CartProvider');
