@@ -1,7 +1,7 @@
 import React from 'react';
-import Link from 'next/link';
-import { NavLinkProps } from './type';
 import { FaHome, FaShoppingCart } from 'react-icons/fa';
+import NavLink from '../NavLink';
+import AuthButton from '../AuthButton';
 
 /**
  * NavBar component
@@ -19,26 +19,15 @@ export default function NavBar(): JSX.Element{
             </div>
           </NavLink>
         </div>
+        <div className='flex flex-row gap-2'>
           <NavLink href="/cart">
             <div className='rounded-full bg-teal-600 p-2' >
               <FaShoppingCart color='#e2e8f0' size={20}/>
             </div>
           </NavLink>
+          <AuthButton />
+        </div>
       </ul>
     </div>
   );
 };
-
-
-/**
- * The NavLink component
- * @param {NavLinkProps} props - The props of the NavLink component
- * @returns {JSX.Element}
- */
-function NavLink({children, ...restProps} : NavLinkProps): JSX.Element{
-  return (
-    <li className='content-center'>
-      <Link {...restProps}>{children}</Link>
-    </li>
-  )
-}
