@@ -1,5 +1,6 @@
 "use client"
 import { useCart } from "@/providers/CartProvider";
+import { CartState } from "@/providers/CartProvider/type";
 import { Product } from "@/util/getProducts/type";
 import Image from 'next/image'
 import { CSSProperties, DetailedHTMLProps, TdHTMLAttributes, ThHTMLAttributes, useEffect, useState } from "react";
@@ -50,6 +51,29 @@ export function financial(x: string | number): string {
 }
 
 /**
+ * Gets the quantity of a product in the cart
+ * @param {CartState} state - the state of the cart
+ * @param {Product} product - The product to get the quantity of
+ * @returns {number}
+ */
+export function getQuantity (state: CartState, product: Product): number{
+  return state.items.find(item => item.id === product.id)?.quantity || 0;
+}
+
+/**
+ * Gets the total of the cart
+ * @param {CartState} state - the state of the cart
+ * @param {Product[]} products - The products to get the total of
+ * @returns {string}
+ */
+export function getTotal(state: CartState,products: Product[]): string {
+  return financial(products.reduce((acc, product) => {
+    const quantity = getQuantity(state, product);
+    return acc + (Number(product.price) * quantity);
+    }, 0))
+}
+
+/**
  * The user's cart
  * @returns {JSX.Element}
  */
@@ -65,15 +89,6 @@ export default function Cart(): JSX.Element {
       });
   }, [getCartProducts, setProducts])
 
-  /**
-   * Gets the quantity of a product in the cart
-   * @param {Product} product - The product to get the quantity of
-   * @returns {number}
-   */
-  const getQuantity = (product: Product): number => {
-    return state.items.find(item => item.id === product.id)?.quantity || 0;
-  }
-
   return (
     <table className="table-auto">
       <thead>
@@ -86,7 +101,7 @@ export default function Cart(): JSX.Element {
       </thead>
       <tbody>
         {products.map(product => {
-          const quantity = getQuantity(product);
+          const quantity = getQuantity(state,product);
           return (
             <tr key={product.id}>
               <TableData>
@@ -121,10 +136,7 @@ export default function Cart(): JSX.Element {
           <TableData colSpan={4}>
             <div className="flex flex-row justify-end items-center gap-2">
               <h3 className="text-lg">Total</h3>
-              <p>${financial(products.reduce((acc, product) => {
-              const quantity = getQuantity(product);
-              return acc + (Number(product.price) * quantity);
-              }, 0))}</p>
+              <p>${getTotal(state, products)}</p>
             </div>
           </TableData>
         </tr>
