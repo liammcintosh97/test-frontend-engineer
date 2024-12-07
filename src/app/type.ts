@@ -31,3 +31,21 @@ export type MetaData = {
     }[]
   }
 }
+
+/**
+ * The props for the paginator component
+ */
+export type PaginatorProps = {
+  /** The category to paginate */
+  category: string | undefined
+  /** The current page */
+  page: number | undefined
+  /** The total number of pages */
+  totalPages: number | undefined
+}
+
+/** The properties of the Products page*/
+export type HomePageProps = {
+  /** The search parameters */
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}

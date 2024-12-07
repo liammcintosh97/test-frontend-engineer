@@ -1,12 +1,13 @@
 import { notFound } from "next/navigation";
-import { Product } from "./type";
+import { GetProductData } from "./type";
 
 /**
  * Fetches all the products from the API
  * @returns {Promise<Product[]>}
  */
-export default async function getProducts(category?: string): Promise<Product[]> {
+export default async function getProducts(options: {category?: string, page: number}): Promise<GetProductData> {
   try {
+    const {category, page = 1} = options
     let url = 'https://fakestoreapi.com/products'
 
     if (category) {
@@ -21,7 +22,20 @@ export default async function getProducts(category?: string): Promise<Product[]>
       throw new Error(`Failed to fetch products ${res.status} - ${res.statusText}`);
     }
     const products = await res.json();
-    return products
+    if (page === -1) {
+      return {products, page: undefined, totalPages: undefined}
+    } else {
+      const pageSize = 4;
+
+      const paginatedProducts = products.slice((page - 1) * pageSize, page * pageSize);
+
+      const data: GetProductData = {
+        page,
+        totalPages: Math.ceil(products.length / pageSize),
+        products: paginatedProducts
+      }
+      return data;
+    }
   } catch (error) {
     if ((error as Error).message === 'Unexpected end of JSON input') {
       notFound()

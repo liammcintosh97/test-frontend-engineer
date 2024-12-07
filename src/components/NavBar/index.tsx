@@ -1,7 +1,8 @@
 import React from 'react';
-import { FaHome, FaShoppingCart } from 'react-icons/fa';
+import { FaHome } from 'react-icons/fa';
 import NavLink from '../NavLink';
 import AuthButton from '../AuthButton';
+import CartButton from '../CartButton';
 
 /**
  * NavBar component
@@ -20,11 +21,7 @@ export default function NavBar(): JSX.Element{
           </NavLink>
         </div>
         <div className='flex flex-row gap-2'>
-          <NavLink href="/cart">
-            <div className='rounded-full bg-teal-600 p-2' >
-              <FaShoppingCart color='#e2e8f0' size={20}/>
-            </div>
-          </NavLink>
+          <CartButton />
           <AuthButton />
         </div>
       </ul>

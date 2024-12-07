@@ -10,9 +10,9 @@ const routes = [
  * @returns {Promise<MetadataRoute.Sitemap>}
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const data = await getProducts()
-
-  const products = data.map(({ id }) => ({
+  const data = await getProducts({page: -1})
+  console.log(data)
+  const products = data.products.map(({ id }) => ({
     url: `${process.env.HOST}/${id}`,
     lastModified: new Date().toISOString(),
   }));

@@ -30,6 +30,11 @@ export async function generateMetadata({
   }
 }
 
+/**
+ * The Product page
+ * @param {ProductPageProps} props - The properties of the Product page
+ * @returns
+ */
 export default async function ProductPage({
   params,
 }: ProductPageProps) {

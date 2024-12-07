@@ -1,3 +1,17 @@
+/**
+ * The type definitions for the getProducts function
+ */
+export type GetProductData = {
+  /** The current page */
+  page: number | undefined,
+  /**
+   * The total number of pages
+   */
+  totalPages: number | undefined,
+  /** The products on the page */
+  products: Product[],
+}
+
 /**The object which presents a product from the Fake Store API */
 export type Product = {
   /** The unique identifier for the product */
