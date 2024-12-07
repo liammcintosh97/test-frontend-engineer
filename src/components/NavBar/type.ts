@@ -1,5 +1,5 @@
 import { LinkProps } from "next/link";
-import { AnchorHTMLAttributes, ReactNode } from "react";
+import { AnchorHTMLAttributes } from "react";
 
 /**
  * The NavElement interface defines the props for the NavLink component

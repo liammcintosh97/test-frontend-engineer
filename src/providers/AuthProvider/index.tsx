@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       const data = await res.json()
       */
+      console.log(username, password)
       const mockData = {token:'abc123'}
       localStorage.setItem('token',mockData.token)
       setToken(mockData.token)

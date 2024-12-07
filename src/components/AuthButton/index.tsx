@@ -1,7 +1,7 @@
 "use client";
 import { useAuth } from "@/providers/AuthProvider";
 import NavLink from "../NavLink";
-import { FiLogIn, FiLogOut } from "react-icons/fi";
+import { FiLogIn } from "react-icons/fi";
 
 export default function AuthButton(): JSX.Element {
   const {token, logout} = useAuth()
