@@ -100,7 +100,7 @@ export default function Cart(): JSX.Element {
         </tr>
       </thead>
       <tbody>
-        {products.length > 1 && products.map(product => {
+        {products.map(product => {
           const quantity = getQuantity(state,product);
           return (
             <tr key={product.id}>
