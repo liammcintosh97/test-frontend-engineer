@@ -3,22 +3,16 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import CartButton from './index';
 import { useCart } from '../../providers/CartProvider';
-import { CartProvider } from '../../providers/CartProvider';
 
 jest.mock('../../providers/CartProvider');
 
 describe('CartButton', () => {
   it('renders without crashing', () => {
     (useCart as jest.Mock).mockReturnValue({
-      state: { items: [] },
+      state: { items: [{ quantity: 2 }, { quantity: 3 }] },
     });
 
-    render(
-      <CartProvider>
-        <CartButton />
-      </CartProvider>
-    );
-
+    render(<CartButton />);
     expect(screen.getByRole('link')).toBeInTheDocument();
   });
 
@@ -27,11 +21,7 @@ describe('CartButton', () => {
       state: { items: [{ quantity: 2 }, { quantity: 3 }] },
     });
 
-    render(
-      <CartProvider>
-        <CartButton />
-      </CartProvider>
-    );
+    render(<CartButton />);
 
     expect(screen.getByText('5')).toBeInTheDocument();
   });
@@ -41,11 +31,7 @@ describe('CartButton', () => {
       state: { items: [] },
     });
 
-    render(
-      <CartProvider>
-        <CartButton />
-      </CartProvider>
-    );
+    render(<CartButton />);
 
     expect(screen.queryByText('0')).not.toBeInTheDocument();
   });

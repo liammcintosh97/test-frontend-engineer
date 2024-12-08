@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import AddToCartButton from './index';
-import { CartProvider } from '../../providers/CartProvider';
+import CartProvider from '../../providers/CartProvider';
 
 describe('AddToCartButton', () => {
   const product = {

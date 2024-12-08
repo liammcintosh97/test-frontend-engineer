@@ -27,7 +27,6 @@ export default function LoginForm(): JSX.Element {
       const username = formData.get('username')?.toString()
       const password = formData.get('password')?.toString()
 
-      console.log(username, password)
       if (username && password) {
         await login(username, password)
         router.push('/')

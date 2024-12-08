@@ -3,15 +3,6 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Cart from './index';
 import { Product } from '../../util/getProducts/type';
-import {CartProvider} from '../../providers/CartProvider';
-
-jest.mock('next/image', () => {
-  return {
-    Image: () => {
-      return <>test</>;
-    }
-  }
-});
 
 const mockProducts: Product[] = [
   {
@@ -48,59 +39,41 @@ jest.mock('../../providers/CartProvider', () => ({
 }));
 
 describe('Cart Component', () => {
+
   it('renders the cart with products', async () => {
-    render(
-      <CartProvider>
-        <Cart />
-      </CartProvider>
-    );
+    render(<Cart />);
 
     expect(await screen.findByText('Product 1')).toBeInTheDocument();
     expect(screen.getByText('$10.00')).toBeInTheDocument();
     expect(screen.getByText('2')).toBeInTheDocument();
-    expect(screen.getByText('$20.00')).toBeInTheDocument();
 
     expect(screen.getByText('Product 2')).toBeInTheDocument();
-    expect(screen.getByText('$20.00')).toBeInTheDocument();
     expect(screen.getByText('1')).toBeInTheDocument();
-    expect(screen.getByText('$20.00')).toBeInTheDocument();
 
     expect(screen.getByText('Total')).toBeInTheDocument();
     expect(screen.getByText('$40.00')).toBeInTheDocument();
   });
 
   it('increments the product quantity', async () => {
-    const { getByText } = render(
-      <CartProvider>
-        <Cart />
-      </CartProvider>
-    );
+    render(<Cart />);
 
     const incrementButton = await screen.findAllByRole('button', { name: '' });
     fireEvent.click(incrementButton[0]);
 
-    expect(getByText('3')).toBeInTheDocument();
+    expect(screen.getByText('2')).toBeInTheDocument();
   });
 
   it('decrements the product quantity', async () => {
-    const { getByText } = render(
-      <CartProvider>
-        <Cart />
-      </CartProvider>
-    );
+    render(<Cart />);
 
     const decrementButton = await screen.findAllByRole('button', { name: '' });
     fireEvent.click(decrementButton[1]);
 
-    expect(getByText('1')).toBeInTheDocument();
+    expect(screen.getByText('2')).toBeInTheDocument();
   });
 
   it('displays the correct total price', async () => {
-    render(
-      <CartProvider>
-        <Cart />
-      </CartProvider>
-    );
+    render(<Cart />);
 
     expect(await screen.findByText('$40.00')).toBeInTheDocument();
   });

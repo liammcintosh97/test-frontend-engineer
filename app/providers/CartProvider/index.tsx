@@ -7,7 +7,7 @@ import getProduct from '../../util/getProduct';
  *
  * @type {Context<CartContextType | undefined>}
  */
-const CartContext: Context<CartContextType | undefined> = createContext<CartContextType | undefined>(undefined);
+export const CartContext: Context<CartContextType | undefined> = createContext<CartContextType | undefined>(undefined);
 
 /**
  * Finds an item in the cart by its id.
@@ -134,9 +134,9 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 /**
  * The CartProvider component provides the shopping cart state and actions to its children.
  * @param {{ children: ReactNode }} props - The children to render.
- * @returns
+ * @returns {JSX.Element} The CartProvider component.
  */
-export const CartProvider = ({ children }: { children: ReactNode }) => {
+export default function CartProvider({ children }: { children: ReactNode }): JSX.Element {
   const [state, dispatch] = useReducer(cartReducer, { items: [] });
 
   const getStoredCart = useCallback(() => {

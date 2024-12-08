@@ -23,7 +23,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = useCallback(async(username: string, password: string) => {
     try {
-      console.log(JSON.stringify({username, password}))
 
       const res = await axios<AuthData>({
         url: 'https://fakestoreapi.com/auth/login',

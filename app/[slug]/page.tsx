@@ -2,10 +2,10 @@ import { MetaData} from "../type"
 import Image from 'next/image'
 import Rating from "../components/Rating";
 import PriceTag from "../components/PriceTag";
-import Button from "../components/Button";
 import { openGraphBasicFields, openGraphImage } from "../shared-metadata";
 import getProduct from "../util/getProduct";
 import { ProductPageProps } from "./type";
+import AddToCartButton from "../components/AddToCartButton";
 
 /**
  * Generates the meta data for the Product page
@@ -65,7 +65,7 @@ export default async function ProductPage({
             <p className="mt-4">{product.description}</p>
             <PriceTag className="mt-4"price={product.price}/>
           </div>
-          <Button className='w-full bg-green-500 hover:bg-green-700 mt-8 max-w-52'>Add to Cart</Button>
+          <AddToCartButton pid={product.id} className='mt-8 max-w-52'/>
         </div>
       </div>
     </div>

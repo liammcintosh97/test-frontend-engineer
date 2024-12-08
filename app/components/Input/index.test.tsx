@@ -19,7 +19,7 @@ describe('Input Component', () => {
   });
 
   test('displays the correct value', () => {
-    const { getByDisplayValue } = render(<Input label="test"  value="Test value" />);
+    const { getByDisplayValue } = render(<Input label="test"  defaultValue="Test value" />);
     const inputElement = getByDisplayValue('Test value');
     expect(inputElement).toBeInTheDocument();
   });
