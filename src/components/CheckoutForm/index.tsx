@@ -6,12 +6,14 @@ import Input from "../Input"
 import { useEffect, useState } from "react"
 import { Product } from "@/util/getProducts/type"
 import Button from "../Button"
+import { useUser } from "@/providers/UserProvider"
 
 /**
  * The checkout form component
  * @returns {JSX.Element}
  */
 export default function CheckoutForm(): JSX.Element {
+  const {user} = useUser()
   const {state, getCartProducts, dispatch} = useCart()
   const [products, setProducts] = useState<Product[]>([])
 
@@ -21,7 +23,6 @@ export default function CheckoutForm(): JSX.Element {
    */
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log('onSubmit')
     const form = e.currentTarget as HTMLFormElement
     form.reset();
     dispatch({type: 'CLEAR_CART'})
@@ -40,19 +41,19 @@ export default function CheckoutForm(): JSX.Element {
       <fieldset>
         <p className="text-l font-semibold mb-2  text-slate-700">Contact Details</p>
         <div className="flex flex-row flex-wrap gap-2 ">
-          <Input label="First Name" id="first_name" name="first_name" autoComplete='name' type='text' required />
-          <Input label="Last Name" id="last_name" name="last_name" autoComplete='family-name' type='text' required />
-          <Input label="Email" id="email" name="email" autoComplete='email' type='email' />
-          <Input label="Number" id="number" name="number" autoComplete='mobile tel' type='tel' />
+          <Input label="First Name" id="first_name" name="first_name" autoComplete='name' type='text' required defaultValue={user?.name.firstname} />
+          <Input label="Last Name" id="last_name" name="last_name" autoComplete='family-name' type='text' required defaultValue={user?.name.lastname} />
+          <Input label="Email" id="email" name="email" autoComplete='email' type='email' defaultValue={user?.email} />
+          <Input label="Number" id="number" name="number" autoComplete='mobile tel' type='tel' defaultValue={user?.phone} />
         </div>
       </fieldset>
       <fieldset>
         <p className="text-l font-semibold mb-2 text-slate-700">Address Details</p>
         <div className="flex flex-row flex-wrap gap-2">
-          <Input label="Street Address" id="street_address" name="street_address" autoComplete='street-address' type='text' required />
-          <Input label="City" id="city" name="city" autoComplete='address-level2' type='text' required />
+          <Input label="Street Address" id="street_address" name="street_address" autoComplete='street-address' type='text' required defaultValue={user?.address.street} />
+          <Input label="City" id="city" name="city" autoComplete='address-level2' type='text' required defaultValue={user?.address.city} />
           <Input label="State" id="state" name="state" autoComplete='address-level1' type='text' required />
-          <Input label="Postal Code" id="postal_code" name="postal_code" autoComplete='postal-code' type='text' required />
+          <Input label="Postal Code" id="postal_code" name="postal_code" autoComplete='postal-code' type='text' required defaultValue={user?.address.zipcode} />
           <Input label="Country" id="country" name="country" autoComplete='country' type='text' required />
         </div>
       </fieldset>

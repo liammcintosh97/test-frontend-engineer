@@ -1,5 +1,6 @@
 import { Context, createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
-import { AuthContextType } from "./type";
+import { AuthContextType, AuthData } from "./type";
+import axios from "axios";
 
 /**
  * The context for the auth.
@@ -22,28 +23,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = useCallback(async(username: string, password: string) => {
     try {
-      /**
-       * When I was developing this I noticed that the API always returned error 400 even when using
-       * the provided credentials in the documentation. so I decided to mock the response.
-       * I'm going to leave the code commented out so you can still see how it would work.
-      /*
-      const res = await fetch('https://fakestoreapi.com/auth/login',{
+      console.log(JSON.stringify({username, password}))
+
+      const res = await axios<AuthData>({
+        url: 'https://fakestoreapi.com/auth/login',
         method:'POST',
-        body: JSON.stringify({username, password}),
+        data: {username, password},
       })
 
-      if (!res.ok) {
+      if (res.status !== 200) {
         throw new Error('Login failed')
       }
 
-      const data = await res.json()
-      */
-      console.log(username, password)
-      const mockData = {token:'abc123'}
-      localStorage.setItem('token',mockData.token)
-      setToken(mockData.token)
 
-      return mockData
+      localStorage.setItem('token',res.data.token)
+      setToken(res.data.token)
+
+      return res.data
     } catch (error) {
       throw error
     }

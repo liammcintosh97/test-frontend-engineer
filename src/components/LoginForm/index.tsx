@@ -46,8 +46,8 @@ export default function LoginForm(): JSX.Element {
   return (
     <form className="flex flex-col items-center" onSubmit={onSubmit} onChange={() => setError(null)}>
       <h2 className="text-2xl font-semibold mb-8  text-cyan-500">Login</h2>
-      <Input label="Username" id="username" name="username" autoComplete='username' type='text' required />
-      <Input label="Password" id="password" autoComplete="current-password" name="password" type='password' required />
+      <Input label="Username" id="username" defaultValue="mor_2314" name="username" autoComplete='username' type='text' required />
+      <Input label="Password" id="password" defaultValue="83r5^_" autoComplete="current-password" name="password" type='password' required />
       {error && <p className="text-red-500 mb-2">{error}</p>}
       <Button type="submit" className="bg-cyan-500 hover:bg-cyan-700">
         Login
