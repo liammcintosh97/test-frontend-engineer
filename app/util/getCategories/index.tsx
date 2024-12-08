@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
  */
 export default async function getCategories(): Promise<string[]> {
   try {
-    const res = await fetch('https://fakestoreapi.com/products/categories', {cache: 'force-cache' });
+    const res = await fetch('https://fakestoreapi.com/products/categories', {cache: 'force-cache', next: { revalidate: 30 } });
     if (res.status !== 200) {
       if (res.status === 404) {
         notFound()
